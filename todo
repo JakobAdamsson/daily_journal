@@ -1,0 +1,87 @@
+🧠 Sentiment Model
+
+    Choose model type (e.g., Naive Bayes).
+
+        ☐ Use Swedish or English?
+
+        ☐ Use existing datasets (e.g., SweSentiment, NLTK).
+
+    Train or load the sentiment model.
+
+    Create backend API endpoint to analyze sentiment.
+
+    Return sentiment result (e.g., score or category).
+
+📝 Daily Mood Input
+
+    ☐ Create frontend form with:
+
+        Mood scale (1–10).
+
+        Text input: what happened today?
+
+        Optional: any special influences?
+
+    ☐ Send form data to backend (POST /daily_entry).
+
+    ☐ Backend:
+
+        Parse and store mood, text, timestamp.
+
+        Run sentiment analysis and store result.
+
+📈 Mood Timeline Graph
+
+    ☐ Backend: GET /mood_entries returns mood scores and dates.
+
+    ☐ Frontend:
+
+        Use Chart.js, Recharts, etc.
+
+        Plot mood over time.
+
+        Optional: color-code based on sentiment.
+
+🧠 Use Sentiment on Input
+
+    ☐ Integrate sentiment analysis into the input saving process.
+
+    ☐ Store result in the database with the daily entry.
+
+🖼️ Upload Exercise Images
+
+    ☐ Frontend file uploader (drag & drop or file picker).
+
+    ☐ Backend endpoint: POST /upload_exercise_image.
+
+        Save image + metadata.
+
+        Store image reference in DB.
+
+📂 Recently Viewed Exercises
+
+    ☐ Backend: GET /recent_exercises returns latest uploads.
+
+    ☐ Frontend:
+
+        Display thumbnails.
+
+        Clickable to view full image.
+
+⬇️ Export Data (CSV/JSON)
+
+    ☐ Add export button in UI.
+
+    ☐ Backend:
+
+        GET /export/json returns user data as JSON.
+
+        GET /export/csv returns user data as CSV.
+
+    ☐ Allow export of:
+
+        Mood entries
+
+        Sentiment scores
+
+        Optional: exercises

@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Byte-compiled / optimized / DLL files
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.pytest_cache/
+
+# Flask
+instance/
+*.db
+*.sqlite3
+*.sqlite
+*.bak
+*.tmp
+
+# Flask/Dotenv
+.env
+.env.*
+
+# pip-tools
+*.lock
+pip-log.txt
+
+# Coverage reports
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+.cache
+
+# Testing
+.pytest_cache/
+nosetests.xml
+test-results/
+
+# MyPy and other linting
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Tailwind / Node.js / Frontend
+node_modules/
+dist/
+build/
+*.log
+.cache/
+.postcssrc.js
+.tailwind.config.js
+tailwind.config.ts
+*.css.map
+*.tsbuildinfo
+
+# OS-specific
+.DS_Store
+Thumbs.db
