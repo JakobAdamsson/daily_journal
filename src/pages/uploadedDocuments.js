@@ -12,15 +12,19 @@ const getPublicFileUrl = (filePath) => {
   return `http://localhost:5000/${normalized}`;
 };
 
-function handleViewFile(file_path, setSelectedImage, file_type) {
+function handleViewFile(file_path, setSelectedImage, file_type, setSelectedPDF) {
     if (file_type === "png" || file_type === "jpg" || file_type === "jpeg") {
         let image_url = getPublicFileUrl(file_path);
         setSelectedImage(image_url);
     }
+    if (file_type === "pdf") {
+        let pdf_url = getPublicFileUrl(file_path);
+        window.open(pdf_url, "_blank");
+    }
 
 }
 
-function renderRow(fileName, DocumentID, created_at, classes, file_path, setSelectedImage, file_type) {
+function renderRow(fileName, DocumentID, created_at, classes, file_path, setSelectedImage, file_type, setSelectedPDF) {
   return (
     <tr key={DocumentID} className="hover:bg-gray-50 dark:hover:bg-gray-700">
       <td className={classes}>
@@ -51,7 +55,7 @@ function renderRow(fileName, DocumentID, created_at, classes, file_path, setSele
                 className="font-medium text-blue-600 dark:text-blue-400"   
                 onClick={(e) => {
                     e.preventDefault();
-                    handleViewFile(file_path, setSelectedImage, file_type);
+                    handleViewFile(file_path, setSelectedImage, file_type, setSelectedPDF);
                     }}
               >
                 View
@@ -65,6 +69,7 @@ function renderRow(fileName, DocumentID, created_at, classes, file_path, setSele
 export function TableOfUploadedDocuments() {
   const [tableRows, setTableRows] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedPDF, setSelectedPDF] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,7 +118,7 @@ export function TableOfUploadedDocuments() {
           {tableRows.map(({ file_name, id, created_at, file_path, file_type}, index) => {
             const isLast = index === tableRows.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-gray-100 dark:border-gray-700";
-            return renderRow(file_name, id, created_at, classes, file_path, setSelectedImage, file_type);
+            return renderRow(file_name, id, created_at, classes, file_path, setSelectedImage, file_type, setSelectedPDF);
           })}
         </tbody>
       </table>
