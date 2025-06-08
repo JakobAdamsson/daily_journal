@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, tab, Typography } from "@material-tailwind/react";
 import { GetUserEntries } from "../helpers/fetchbackend.js";
-import { ta } from "date-fns/locale/ta";
 import { GetUserEntryById } from "../helpers/fetchbackend.js";
-import { set } from "date-fns/set";
 
 
 const TABLE_HEAD = ["Name", "DocumentID", "Summary", "Sentiment","CreatedAt",""];

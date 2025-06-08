@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { LandingPage } from './pages/landingPage';
 import { Background } from './pages/background';
@@ -7,15 +6,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import { Login } from './pages/login'
 import { Features } from './pages/features'
 
-import { faMoon } from "@fortawesome/free-regular-svg-icons";
 import { IoMoon } from "react-icons/io5";
 import { IoSunny } from "react-icons/io5";
-import { IconContext } from "react-icons";
 import useDarkMode from './useDarkMode';
 import { UserSettings } from './pages/settings';
 import { Signup } from './pages/signup';
 import { ThemeProvider } from "@material-tailwind/react";
 import { TextEditorPage } from './pages/textEditorPage';
+import { Uploader } from './pages/uploadFiles';
+import { TableOfUploadedDocuments } from './pages/uploadedDocuments';
 
 
 
@@ -46,7 +45,9 @@ function App() {
 return (
   <ThemeProvider>
     <Router>
+      
       <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+        
         <Routes>
           
           <Route path="/background" element={<Background />} />
@@ -59,7 +60,9 @@ return (
             }
           />
           <Route path="/features" element={<Features />} />
+          <Route path="/uploads" element={<TableOfUploadedDocuments email={email} />} />
           <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/upload_document" element={<Uploader></Uploader>} />
           <Route path="/" element={<LandingPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} email={email} />} />
           <Route path="/user_settings" element={<UserSettings email={email} password={password}/>} />
           {isLoggedIn && (<Route path="/Texteditor" element={<TextEditorPage />} />)}
@@ -75,6 +78,7 @@ return (
           </button>
         </div>
       </div>
+      
   
     </Router>
   </ThemeProvider>

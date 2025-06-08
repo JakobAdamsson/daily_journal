@@ -6,7 +6,6 @@ import {
   Card,
   CardBody,
 } from "@material-tailwind/react";
-import { set } from "date-fns/set";
 import { UserApi, UpdateUserApi } from "../helpers/fetchbackend";
 import { href, useNavigate } from "react-router-dom";
 

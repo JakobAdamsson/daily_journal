@@ -5,28 +5,29 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom';
 import { RecentDocuments } from './recentDocuments.js'
-import { loginUser } from '../helpers/fetchbackend.js';
 import { GetUsername } from '../helpers/fetchbackend.js';
-import { UserSettings } from './settings.js';
 import { useNavigate } from "react-router-dom";
 
-import { Editor } from 'primereact/editor';
 
 
 
 export function LandingPage({ isLoggedIn, setIsLoggedIn, email}) {
     //console.log(localStorage.getItem("isLoggedIn"))
-    const textEditorEnabled = localStorage.getItem("isLoggedIn") === "true";
+    const renderLoginComponents = localStorage.getItem("isLoggedIn") === "true";
     //console.log('textEditorEnabled:', textEditorEnabled);
     let tmp = ""
-    if (textEditorEnabled) {
+    if (renderLoginComponents) {
         tmp = [{
             name: 'Write Journal',
             href: '/Texteditor'},
           {
             name: 'Upload Document',
             href: '/upload_document',
-          }
+          },
+          {
+            name: 'Your uploads',
+            href: '/uploads',
+          },
           ]
     }
     else {
@@ -59,15 +60,15 @@ export function LandingPage({ isLoggedIn, setIsLoggedIn, email}) {
 
 return (
   <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header className="relative  -mt-4 -mr-4 -ml-6">
       <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
               alt=""
               src="https://whws.org.au/wp-content/uploads/2021/12/get-on-top-of-mental-health-early.jpg"
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
           </a>
         </div>
@@ -213,7 +214,6 @@ return (
         </div>
       </div>
 
-      <RecentDocuments isLoggedIn={isLoggedIn} />
 
       <div
         aria-hidden="true"

@@ -7,7 +7,6 @@ import 'quill/dist/quill.snow.css';
 import {TableOfDocuments} from './tableOfDocuments.js'
 
 import { SaveTextToBackend } from '../helpers/fetchbackend.js'; // Assuming this function is defined to save text
-import { is } from 'date-fns/locale/is';
 import { Loader } from './loader.js';
 
 
@@ -43,12 +42,13 @@ export function TextEditorPage () {
         if (response.status !== 200) {
           alert(response.message, response.status);
           setIsEditing(false);
+          setIsDataLoading(false);
         }
         else { 
           alert(response.message, response.status);
           window.location.reload(false);
           setIsEditing(false);
-          setIsEditing(false);
+          setIsDataLoading(false);
 
         }
       })
@@ -56,12 +56,24 @@ export function TextEditorPage () {
         
         alert('Error saving text:', error);
         setIsEditing(false);
+        setIsDataLoading(false);
       });
 
   };
 
   return (
       <div className="p-6">
+                <div className="relative lg:row-span-2 lg:-mt-10 -mb-4 -ml-4">
+
+          <a href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">Your Company</span>
+            <img
+              alt=""
+              src="https://whws.org.au/wp-content/uploads/2021/12/get-on-top-of-mental-health-early.jpg"
+              className="h-12 w-auto"
+            />
+          </a>
+        </div>
         {isDataLoading && (
           <div className="flex justify-center mb-4">
             <Loader />

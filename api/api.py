@@ -1,5 +1,5 @@
 import time
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from app.models.users import add_user, get_user_name, get_user_id
 from app.services.auth_service import validate_user_login, validate_information_change
@@ -9,7 +9,10 @@ from app.gpt_model.inference import run_prediction
 from app.services.read_user_entry_for_edit import read_user_entry_for_edit
 import sys
 import html2text
-
+import os
+from app.services.save_user_uploads import save_user_uploads_locally
+from app.models.user_uploads import add_user_upload_to_db, fetch_user_uploads
+from app.utils.split_paths_into_filenames import split_paths_into_filenames, format_paths, get_file_type
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -127,6 +130,7 @@ def get_user_entry_by_id_db():
         return jsonify({}), 200
 
     data = request.get_json()
+    
     user_id = get_user_id(data["email"])
     if user_id is None:
         return jsonify({"message": "User not found"}), 404
@@ -140,3 +144,56 @@ def get_user_entry_by_id_db():
         return jsonify({"message": "Entry not found"}), 404
     
     return jsonify({"entry": entry}), 200
+
+
+@app.route('/save_user_upload', methods=["POST", "OPTIONS"])
+def save_user_upload():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    files = request.files
+    email = request.form.get("email")
+    user_id = get_user_id(email)
+
+    # paths could be list of paths(path) or the error message
+    success, paths = save_user_uploads_locally(user_id, files)
+    
+    file_names = split_paths_into_filenames(paths)
+
+    formatted_paths = format_paths(paths)
+
+    file_types = get_file_type(paths)
+    print(file_types)
+
+    if not success:
+        return jsonify({"message": "Failed to save uploads", "error": paths}), 500
+    
+    # fioxa till paths så att de enbart innehåller user_entries/etc
+    if not add_user_upload_to_db(user_id, formatted_paths, file_names, file_types):
+        return jsonify({"message": "Failed to add upload entry to database"}), 500
+
+    
+    return jsonify({"message": "File uploaded and entry saved successfully"}), 200
+
+
+@app.route('/get_user_uploads_db', methods=["POST", "OPTIONS"])
+def get_user_uploads_db():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    email = request.get_json().get("email")
+    # call db function to get user id
+    user_id = get_user_id(email)
+
+    # call db function to get user uploads
+    uploads = fetch_user_uploads(user_id)
+    
+    return jsonify({"uploads": uploads}), 200
+
+
+
+@app.route('/user_uploads/<path:filename>')
+def serve_uploaded_file(filename):
+    UPLOAD_FOLDER = r'C:\daily_journal\api\app\user_uploads'  # hardcoded absolute path
+    full_path = os.path.join(UPLOAD_FOLDER, filename)
+    return send_from_directory(UPLOAD_FOLDER, filename)

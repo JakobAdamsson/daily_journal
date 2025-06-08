@@ -13,7 +13,7 @@ export function RecentDocuments({ isLoggedIn }) {
     <div className="bg-gray-50 dark:bg-gray-900 py-24 sm:py-32 transition-colors duration-300">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
         <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-gray-950 dark:text-white sm:text-5xl">
-          Recently used documents
+          Recently uploaded documents
         </p>
 
         <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
