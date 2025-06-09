@@ -4,7 +4,7 @@ from flask_cors import CORS
 from app.models.users import add_user, get_user_name, get_user_id
 from app.services.auth_service import validate_user_login, validate_information_change
 from app.services.save_user_entries import save_user_entries_locally
-from app.models.user_entries import add_user_entry, get_user_entries, get_recent_user_entries, get_user_entry_by_id
+from app.models.user_entries import add_user_entry, get_user_entries, get_recent_user_entries, get_user_entry_by_id,  fetch_user_feelings
 from app.gpt_model.inference import run_prediction
 from app.services.read_user_entry_for_edit import read_user_entry_for_edit
 import sys
@@ -94,13 +94,14 @@ def save_text():
     raw_html = data["data"]
     text_data = html2text.html2text(raw_html)
 
-    results_dict = run_prediction(file_path)
-
-    sentiment = results_dict["Sentiment"]
-    summary = results_dict["Summary"]
+    results = run_prediction(file_path)
+    sentiment = results.sentiment
+    summary = results.summary
+    feeling = results.feeling
+    print(sentiment, summary, feeling)
     if not success:
         return jsonify({"message": "Failed to save text"}), 400
-    if not add_user_entry(user_id, file_name, file_path, sentiment, summary, text_data):
+    if not add_user_entry(user_id, file_name, file_path, sentiment, summary, text_data, feeling):
         return jsonify({"message": "Failed to add entry to database"}), 500
 
     
@@ -197,3 +198,32 @@ def serve_uploaded_file(filename):
     UPLOAD_FOLDER = r'C:\daily_journal\api\app\user_uploads'  # hardcoded absolute path
     full_path = os.path.join(UPLOAD_FOLDER, filename)
     return send_from_directory(UPLOAD_FOLDER, filename)
+
+
+
+@app.route('/get_user_feelings_db', methods=["POST", "OPTIONS"])
+def get_user_feelings_db():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    email = request.get_json().get("email")
+    # call db function to get user id
+    user_id = get_user_id(email)
+
+    # call db function to get user uploads
+    feelings = fetch_user_feelings(user_id)
+    print(feelings)
+    return jsonify({"feelings": feelings}), 200
+
+
+@app.route('/get_all_user_data_db', methods=["POST", "OPTIONS"])
+def get_all_user_data_db():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+    
+    email = request.get_json().get("email")
+    # call db function to get user id
+    user_id = get_user_id(email)
+    print(user_id)
+
+    return jsonify({"feelings": user_id}), 200

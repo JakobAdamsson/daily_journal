@@ -4,7 +4,7 @@ import { GetUserEntries } from "../helpers/fetchbackend.js";
 import { GetUserEntryById } from "../helpers/fetchbackend.js";
 
 
-const TABLE_HEAD = ["Name", "DocumentID", "Summary", "Sentiment","CreatedAt",""];
+const TABLE_HEAD = ["Name", "DocumentID", "Summary", "Sentiment", "Feeling(1-10)", "CreatedAt",""];
 
 
 async function handleAutofill(DocumentID, setIsEditing, setText, setfileName) {
@@ -21,7 +21,7 @@ async function handleAutofill(DocumentID, setIsEditing, setText, setfileName) {
     setIsEditing(true);
 }
 
-function renderRow(name, DocumentID, Summary, Sentiment, classes, created_at, setIsEditing, setText, setfileName) {
+function renderRow(name, DocumentID, Summary, Sentiment, classes, feeling, created_at, setIsEditing, setText, setfileName) {
   return (
     <tr key={DocumentID} className="hover:bg-gray-50 dark:hover:bg-gray-700">
       <td className={classes}>
@@ -42,6 +42,11 @@ function renderRow(name, DocumentID, Summary, Sentiment, classes, created_at, se
       <td className={classes}>
         <Typography variant="small" className="font-normal text-gray-800 dark:text-gray-200">
           {Sentiment}
+        </Typography>
+      </td>
+        <td className={classes}>
+        <Typography variant="small" className="font-normal text-gray-800 dark:text-gray-200">
+          {feeling}
         </Typography>
       </td>
         <td className={classes}>
@@ -71,6 +76,7 @@ export function TableOfDocuments({ setIsEditing, setText, setfileName }) {
   useEffect(() => {
     const fetchData = async () => {
     const entries = await GetUserEntries(localStorage.getItem("email"));
+    console.log(entries.entries);
     let formatted = [];
     for (const obj in entries.entries) {
         const tmp = {
@@ -78,6 +84,7 @@ export function TableOfDocuments({ setIsEditing, setText, setfileName }) {
             id: entries.entries[obj].id,
             summary: entries.entries[obj].summary,
             sentiment: entries.entries[obj].sentiment,
+            feeling: entries.entries[obj].feeling,
             created_at: entries.entries[obj].created_at
         }
         formatted.push(tmp);
@@ -112,10 +119,10 @@ export function TableOfDocuments({ setIsEditing, setText, setfileName }) {
           </tr>
         </thead>
         <tbody>
-          {tableRows.map(({ file_name, id, summary, sentiment, created_at }, index) => {
+          {tableRows.map(({ file_name, id, summary, sentiment, feeling, created_at }, index) => {
             const isLast = index === tableRows.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-gray-100 dark:border-gray-700";
-            return renderRow(file_name, id, summary, sentiment, classes, created_at, setIsEditing, setText, setfileName);
+            return renderRow(file_name, id, summary, sentiment, classes, feeling, created_at, setIsEditing, setText, setfileName);
           })}
         </tbody>
       </table>

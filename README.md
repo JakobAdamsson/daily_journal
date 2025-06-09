@@ -21,8 +21,8 @@ A web application designed to support mental well-being. Users can write journal
 - 🤖 **Chatbot Companion** *(planned)*  
   AI-powered support for casual check-ins and encouragement.
 
-- 📊 **Upload files** *(upcoming)*  
-  Upload documents tied to mental health like KBT exercises
+- 📊 **Upload files** 
+  Upload documents tied to mental health like KBT exercises, supports PNG, JPEG, JPG and PDF
 
 ---
 

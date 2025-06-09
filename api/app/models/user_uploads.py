@@ -56,3 +56,19 @@ def fetch_user_uploads(user_id):
     finally:
         cursor.close()
         db.close()
+
+def fetch_user_feelings(user_id):
+    if not user_id:
+        return []
+
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    
+    try:
+        sql = "SELECT feeling, create_at FROM user_uploads WHERE user_id = %s"
+        cursor.execute(sql, (user_id,))
+        feelings = cursor.fetchall()
+        return feelings
+    finally:
+        cursor.close()
+        db.close()

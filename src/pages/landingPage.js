@@ -28,6 +28,15 @@ export function LandingPage({ isLoggedIn, setIsLoggedIn, email}) {
             name: 'Your uploads',
             href: '/uploads',
           },
+          {
+            name: 'Mood graph',
+            href: '/mood_graph',
+          },
+          {
+            name: 'Export your data',
+            href: '/export_data',
+          },
+          
           ]
     }
     else {

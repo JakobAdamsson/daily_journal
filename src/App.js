@@ -15,6 +15,9 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { TextEditorPage } from './pages/textEditorPage';
 import { Uploader } from './pages/uploadFiles';
 import { TableOfUploadedDocuments } from './pages/uploadedDocuments';
+import {  MoodGraph } from './pages/moodGraph';
+import { GetAllUserData } from './helpers/fetchbackend.js';
+import { ExportData } from './pages/exportData.js';
 
 
 
@@ -41,6 +44,11 @@ function App() {
   setIsLoggedIn(storedLogin);
   }, []);
 
+  const test = async () => {
+    const data = await GetAllUserData(email);
+    console.log(data);
+  }
+
 
 return (
   <ThemeProvider>
@@ -60,6 +68,8 @@ return (
             }
           />
           <Route path="/features" element={<Features />} />
+          <Route path="/mood_graph" element={<MoodGraph></MoodGraph>} />
+          <Route path="/export_data" element={<ExportData></ExportData>} />
           <Route path="/uploads" element={<TableOfUploadedDocuments email={email} />} />
           <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/upload_document" element={<Uploader></Uploader>} />

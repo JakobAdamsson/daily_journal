@@ -10,6 +10,8 @@ const availableApis = {
   get_user_entry_by_id_db: 'http://localhost:5000/get_user_entry_by_id_db',
   save_user_upload: 'http://localhost:5000/save_user_upload',
   get_user_uploads_db: 'http://localhost:5000/get_user_uploads_db',
+  get_user_feelings_db: 'http://localhost:5000/get_user_feelings_db',
+  get_all_user_data_db: 'http://localhost:5000/get_all_user_data_db',
 };
 
 function getApi(apiString) {
@@ -25,7 +27,6 @@ async function postRequest(api, payload, sendFile = false) {
         body: payload,
         });
     } else {
-        console.log("Sending payload:", payload, api);
         response = await fetch(api, {
         method: "POST",
         headers: {
@@ -117,3 +118,17 @@ export const GetUserUploads = async (email) => {
   const { result } = await postRequest(api, { email });
   return result || null;
 };
+
+
+export const GetUserFeelings = async (email) => {
+  const api = getApi('get_user_feelings_db');
+  const { result } = await postRequest(api, { email });
+  return result || null;
+};
+
+
+export const GetAllUserData = async (email) => {
+    const api = getApi('get_all_user_data_db');
+    const { result } = await postRequest(api, { email });
+    return result || null;
+}
